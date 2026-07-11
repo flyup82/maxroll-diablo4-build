@@ -22,6 +22,12 @@ Maxroll.gg의 디아블로 IV endgame 빌드 가이드를 크롤링하여 태그
 
 ---
 
+## 📥 입출력 인터페이스 (Input & Output Interface)
+*   **입력**: Maxroll.gg 빌드 URL 및 `.agents/rules/d4_translator_data/` 로컬 번역 데이터베이스(JSON).
+*   **산출 아티팩트**: `[class]_[build_name]_guide.md` (마크다운 가이드) 및 `[class]_[build_name]_guide.html` (반응형 HTML 보고서).
+
+---
+
 ## 🏃 퀵 스타트 (Quick Start)
 
 ### 1단계: 프로젝트 초기화
