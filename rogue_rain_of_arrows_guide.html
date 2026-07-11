@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>화살비 도적 엔드게임 빌드 가이드</title>
+    <!-- Modern Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #08090c;
+            --card-bg: #11141a;
+            --border-color: #1f2430;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            
+            /* Highlight Colors matching Maxroll & D4 actual UI Values */
+            --color-aspect: #ff8000;        /* 위상: 주황색 */
+            --color-rune: #ffbf00;          /* 룬: 금색 */
+            --color-unique: #ffbf00;        /* 고유: 골드색 */
+            --color-mythic: #a335ee;        /* 신화: 연보라색 */
+            --color-charm: #10b981;         /* 부적/참: 녹색 */
+            --color-skill: #00c0ff;         /* 스킬: 하늘색 */
+            --color-glyph: #f97316;         /* 문양: 오렌지/레드 */
+            --color-paragon: #eab308;       /* 정복자 판: 금색 */
+            --color-general: #38bdf8;       /* 중요 용어: 하늘색 */
+
+            --gradient-primary: linear-gradient(135deg, #ff3344 0%, #7000ff 100%);
+            --shadow-md: 0 10px 20px -3px rgba(0, 0, 0, 0.6);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Noto Sans KR', 'Outfit', sans-serif;
+            line-height: 1.6;
+            padding: 2.5rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, rgba(17, 20, 26, 0.9) 0%, rgba(8, 9, 12, 0) 100%);
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 20px;
+            margin-bottom: 3.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 51, 68, 0.06) 0%, transparent 60%);
+            z-index: -1;
+        }
+
+        .season-badge {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 0 20px rgba(255, 51, 68, 0.4);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.03em;
+        }
+
+        .author {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .author strong {
+            color: #ff3344;
+            font-weight: 600;
+        }
+
+        /* Specific Highlight Classes - Text Color Only, No Border Boxes */
+        .h-aspect {
+            color: var(--color-aspect);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .h-rune {
+            color: var(--color-rune);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .h-unique {
+            color: var(--color-unique);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .h-mythic {
+            color: var(--color-mythic);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .h-charm {
+            color: var(--color-charm);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .h-skill {
+            color: var(--color-skill);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .h-glyph {
+            color: var(--color-glyph);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .h-paragon {
+            color: var(--color-paragon);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .h-general {
+            color: var(--color-general);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* SVGs Alignment */
+        .icon-glyph, .icon-paragon {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 3px;
+            margin-top: -2px;
+        }
+
+        /* Section Styling */
+        section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        section:hover {
+            border-color: rgba(255, 51, 68, 0.2);
+            box-shadow: 0 15px 35px -10px rgba(255, 51, 68, 0.08);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 4px solid #ff3344;
+            padding-left: 0.75rem;
+            color: #fff;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+        }
+
+        /* Info Alert Box */
+        .alert-box {
+            background: rgba(56, 189, 248, 0.02);
+            border-left: 4px solid var(--color-general);
+            padding: 1.5rem;
+            border-radius: 0 16px 16px 0;
+            margin: 1.75rem 0;
+        }
+
+        .alert-box-title {
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Steps Layout */
+        .step-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 1.25rem;
+            background: rgba(255, 255, 255, 0.01);
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .step-num {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 0 10px rgba(255, 51, 68, 0.3);
+        }
+
+        .step-content strong {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        /* Table Styling */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: #fff;
+            font-weight: 700;
+            padding: 1.25rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Visual Mechanism Flowchart */
+        .flowchart-wrapper {
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .flowchart-nodes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .flowchart-node {
+            background: rgba(17, 20, 26, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .flowchart-node:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 51, 68, 0.3);
+        }
+
+        .flowchart-node h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .flowchart-node p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .flowchart-connector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            height: 30px;
+        }
+
+        .flowchart-connector svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: var(--text-secondary);
+            stroke-width: 2;
+        }
+
+        .flowchart-target {
+            background: linear-gradient(135deg, rgba(255, 51, 68, 0.1) 0%, rgba(112, 0, 255, 0.1) 100%);
+            border: 1px solid #ff3344;
+            border-radius: 12px;
+            padding: 1.25rem;
+            width: 70%;
+            text-align: center;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(255, 51, 68, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .flowchart-nodes {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+            .flowchart-target {
+                width: 100%;
+            }
+        }
+
+        /* Refined Gantt Chart - Thinner Capsule bars, Closer Spacing, Offset Float Text */
+        .gantt-wrapper {
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .gantt-header {
+            display: grid;
+            grid-template-columns: 180px repeat(4, 1fr);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #fff;
+            min-width: 920px;
+        }
+
+        .gantt-header-label {
+            text-align: left;
+            padding-left: 5px;
+        }
+
+        .gantt-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem; /* Compressed row gap */
+            margin-top: 1.25rem;
+            position: relative;
+            min-width: 920px;
+        }
+
+        .gantt-row {
+            display: grid;
+            grid-template-columns: 180px repeat(4, 1fr);
+            align-items: center;
+            padding: 0.6rem 0; /* Padding for floating texts */
+        }
+
+        .gantt-label {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            padding-left: 5px;
+        }
+
+        .gantt-track {
+            grid-column: 2 / span 4;
+            position: relative;
+            height: 6px; /* Ultra-thin progress line */
+            background: rgba(255, 255, 255, 0.025);
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.01);
+        }
+
+        .gantt-bar {
+            position: absolute;
+            height: 6px; /* Glow capsule status */
+            top: -1px;
+            border-radius: 9999px;
+            box-shadow: 0 0 10px currentColor;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        /* Floating Offset text above the capsule bar */
+        .gantt-text {
+            position: absolute;
+            top: -20px; /* Offset upward to prevent clipping */
+            left: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #f8fafc;
+            white-space: nowrap;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95);
+        }
+
+        .gantt-bar:hover {
+            transform: scaleY(1.5);
+            filter: brightness(1.2);
+        }
+
+        /* Gantt Bars Position & Color Mapping (Scale: 4 equal segments) */
+        .bar-starter {
+            left: 0%;
+            width: 25%;
+            background: #f97316;
+            color: #f97316;
+        }
+
+        .bar-early {
+            left: 15%;
+            width: 35%;
+            background: #38bdf8;
+            color: #38bdf8;
+        }
+
+        .bar-mid {
+            left: 35%;
+            width: 40%;
+            background: #10b981;
+            color: #10b981;
+        }
+
+        .bar-late {
+            left: 60%;
+            width: 30%;
+            background: #a335ee;
+            color: #a335ee;
+        }
+
+        .bar-push {
+            left: 75%;
+            width: 25%;
+            background: #ef4444;
+            color: #ef4444;
+        }
+
+        /* Mobile View Gantt - Fallback to vertical flow */
+        @media (max-width: 820px) {
+            .gantt-header { display: none; }
+            .gantt-grid { min-width: auto; gap: 1.5rem; }
+            .gantt-row { display: flex; flex-direction: column; align-items: stretch; padding: 0; }
+            .gantt-label { padding-left: 0; margin-bottom: 1.25rem; }
+            .gantt-track { grid-column: auto; height: 16px; margin-bottom: 0.5rem; }
+            .gantt-bar { position: relative; width: 100% !important; left: 0 !important; height: 16px; top: -1px; border-radius: 9999px; }
+            .gantt-text { top: -20px; left: 6px; }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span class="season-badge">시즌 14: 죽음의 각성</span>
+        <h1>화살비 도적 엔드게임 빌드 가이드</h1>
+        <p class="author">분석 및 번역: <strong>Antigravity AI</strong> (Maxroll.gg 원본 출처)</p>
+    </header>
+
+    <main>
+        <!-- 1. 빌드 메커니즘 개요 -->
+        <section id="overview">
+            <h2>빌드 메커니즘 개요</h2>
+            <p><span class="h-skill">화살비</span> <span class="h-general">도적</span>은 화면을 뒤덮는 파괴적인 비주얼과 엄청난 광역 피해(AoE)를 가하는 냉기/독 기반 빌드입니다. 몬스터를 한곳으로 응축하여 일망타진하는 강력한 풀링 능력과 높은 생존력을 자랑합니다. 단, 이 빌드는 **장비 의존도가 극도로 높습니다**. 스타터 빌드 형태로 바로 진입하기는 매우 어려우며, 타 빌드(예: 심장추적자 도적)로 장비를 수급한 후에 전환하는 것을 필수로 권장합니다.</p>
+            
+            <div class="alert-box">
+                <div class="alert-box-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-general)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    빌드 구동 핵심 스탯
+                </div>
+                <p>빌드를 활성화하려면 반드시 **최대 에너지 225 이상** (푸시 세팅의 경우 300 이상) 및 **화살비 쿨다운 15초(CDR 63% 이상)** 브레이크포인트를 맞춰야 합니다. <span class="h-unique">야수내림 장화</span>를 장착하여 에너지를 100% 한 번에 소모하면서 폭발적인 데미지 계수를 얹고, <span class="h-aspect">여파의 위상</span>을 통해 기력을 즉시 대량으로 복구하는 루프를 달성하는 것이 핵심 설계 원리입니다.</p>
+            </div>
+
+            <h3>빌드 작동 시각적 관계도 (Flowchart)</h3>
+            <div class="flowchart-wrapper">
+                <div class="flowchart-nodes">
+                    <!-- Column 1: Setup & Pull -->
+                    <div class="flowchart-node">
+                        <h4>몬스터 집결 및 스택</h4>
+                        <p><span class="h-skill">심장추적자</span> (수동 풀링)</p>
+                        <div class="flowchart-connector">
+                            <svg viewBox="0 0 24 24"><path d="M12 2v20M5 15l7 7 7-7" /></svg>
+                        </div>
+                        <p><span class="h-charm">찌푸린 눈</span> 복수 버프 누적</p>
+                        <div class="flowchart-connector">
+                            <svg viewBox="0 0 24 24"><path d="M12 2v20M5 15l7 7 7-7" /></svg>
+                        </div>
+                        <p><span class="h-skill">냉기 주입</span> 상시 유지</p>
+                    </div>
+
+                    <!-- Column 2: Beastfall Burst -->
+                    <div class="flowchart-node" style="border-color: var(--color-unique);">
+                        <h4>기력 연소 및 증폭</h4>
+                        <p>최대 기력 **225+** 확보</p>
+                        <div class="flowchart-connector">
+                            <svg viewBox="0 0 24 24" style="stroke: var(--color-unique);"><path d="M12 2v20M5 15l7 7 7-7" /></svg>
+                        </div>
+                        <p><span class="h-unique">야수내림 장화</span> 발동</p>
+                        <div class="flowchart-connector">
+                            <svg viewBox="0 0 24 24" style="stroke: var(--color-unique);"><path d="M12 2v20M5 15l7 7 7-7" /></svg>
+                        </div>
+                        <p>기력 100% 완전 소모</p>
+                    </div>
+
+                    <!-- Column 3: Rain & Recovery -->
+                    <div class="flowchart-node">
+                        <h4>화살비 및 자원 순환</h4>
+                        <p><span class="h-skill">화살비</span> 폭격 투사</p>
+                        <div class="flowchart-connector">
+                            <svg viewBox="0 0 24 24"><path d="M12 2v20M5 15l7 7 7-7" /></svg>
+                        </div>
+                        <p><span class="h-aspect">여파의 위상</span> 발동</p>
+                        <div class="flowchart-connector">
+                            <svg viewBox="0 0 24 24"><path d="M12 2v20M5 15l7 7 7-7" /></svg>
+                        </div>
+                        <p>에너지 즉시 완전 복구</p>
+                    </div>
+                </div>
+                
+                <div class="flowchart-connector" style="margin: 0.5rem 0; height: 40px;">
+                    <svg viewBox="0 0 24 24" style="width: 32px; height: 32px; stroke: var(--gradient-primary);"><path d="M12 2v20M5 15l7 7 7-7" /></svg>
+                </div>
+                
+                <div class="flowchart-target">
+                    에너지 소모/복구 무한 루프 가동 및 나락 고단 완벽 정복
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 사냥법 및 기술 활용 -->
+        <section id="gameplay">
+            <h2>사냥법 및 기술 연계 로테이션</h2>
+            <p>전투에서 핵심은 에너지를 최대로 채운 상태에서 화살비를 난사하고, 시전 즉시 에너지를 자동 페이백 받는 매커니즘의 유지입니다.</p>
+            
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <strong>수동 풀링 및 복수(Vengeance) 스택 쌓기</strong>
+                        <p><span class="h-skill">심장추적자</span>를 몬스터 무리 중심에 직접 쏘아 적을 응축하고, <span class="h-charm">찌푸린 눈</span> 참의 핵심 공격력 보정 버프인 '복수' 중첩을 지속해서 수동 리프레시합니다. (참 자동 발동 기본 공격은 이 버프를 갱신하지 못하므로 반드시 수동 공격 연계가 필수적입니다).</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <strong>주입 활성화 및 은신 연계</strong>
+                        <p><span class="h-skill">냉기 주입</span>(또는 독 주입)을 쿨마다 가동하고, <span class="h-skill">은신</span>을 사용해 다음 화살비 투사의 극대화 치명타 확률을 100% 확정으로 적용하며 광기(Ferocity) 버프를 최대화합니다.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <strong>야수내림 화살비 초폭딜 폭사</strong>
+                        <p>기력이 풀 충전된 상태에서 <span class="h-skill">화살비</span>를 투사합니다. <span class="h-unique">야수내림 장화</span>의 피해량 배율이 기력 100% 소모 연산과 곱해져 전장을 휩쓰는 폭딜이 들어갑니다. 직후 소모된 기력은 <span class="h-aspect">여파의 위상</span> 패시브 환급을 통해 순식간에 복구되어 다음 전투 순환으로 즉시 돌입합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 단계별 장비 요구 조건 -->
+        <section id="requirements">
+            <h2>단계별 세팅 요구 조건</h2>
+            <p>이 빌드는 레벨 70 및 고뇌 1 이상에서 필요한 옵션을 타겟팅 수집한 이후에 가동하는 엔드게임 특화 사양입니다.</p>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>빌드 단계</th>
+                            <th>핵심 세팅 아이템</th>
+                            <th>작동 상세 메커니즘</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>최소 조건 (Starter)</strong></td>
+                            <td>
+                                *진입 불가 (추천 안 함)*<br>
+                                - 일반 물리/주입 심추 빌드로 레벨 60 전후 육성
+                            </td>
+                            <td>
+                                - 화살비는 자원 브레이크포인트 미충족 시 기력이 말라 딜이 나오지 않습니다.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>최적 조건 (Midgame)</strong></td>
+                            <td>
+                                - <span class="h-unique">야수내림 장화</span> (빙결 야수 드롭)<br>
+                                - <span class="h-charm">찌푸린 눈</span> 5세트 장신구<br>
+                                - <span class="h-unique">불한당의 입맞춤</span> + <span class="h-aspect">여파의 위상</span> (최대 자원 회복)<br>
+                                - **최대 기력 225, CDR 63%** 달성
+                            </td>
+                            <td>
+                                - 화살비 쿨다운을 15초대 이하로 단축<br>
+                                - 기력을 완전 소모해 야수내림 효과 발동 후 여파의 위상으로 리젠
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>완벽 조건 (Endgame)</strong></td>
+                            <td>
+                                - <span class="h-mythic">할리퀸 관모</span> (샤코)<br>
+                                - 푸시용 반지 <span class="h-unique">펠게인의 인장 반지</span><br>
+                                - **최대 기력 300** 돌파<br>
+                                - 보스 전용 스왑 무기 (<span class="h-aspect">고속의 위상</span>)
+                            </td>
+                            <td>
+                                - <span class="h-unique">펠게인의 인장 반지</span>를 통한 화살비 더블 피해 노드 가동<br>
+                                - Unstoppable 보스전에서 스태거(무력화) 대기 없이 **<span class="h-aspect">고속의 위상</span>** 무기 스왑 킬 속도 향상
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 4. 최적 파밍 루트 및 전략 -->
+        <section id="farming">
+            <h2>최적 파밍 루트 & 로드맵 (Progression Roadmap)</h2>
+            <p>시즌 6+ 최신 캐릭터 레벨(1-60) 및 정복자(Paragon 1-300) 레벨 스케일에 부합하도록 최적화된 시간선 파밍 로드맵입니다.</p>
+            
+            <div class="gantt-wrapper">
+                <!-- Maxroll standard progression segments -->
+                <div class="gantt-header">
+                    <div class="gantt-header-label">파밍 대상 콘텐츠</div>
+                    <div>Starter (Lv 1-60)</div>
+                    <div>Early (Paragon 1-100)</div>
+                    <div>Mid (Paragon 100-200)</div>
+                    <div>Late / Push (Paragon 200-300)</div>
+                </div>
+                
+                <div class="gantt-grid">
+                    <!-- Row 1 -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">위상 & 기초 셋업</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar bar-starter">
+                                <span class="gantt-text">1-60lv 스타터 위상 파밍 (타 빌드로 전서 확보)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2 -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">지옥물결 파밍</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar bar-starter" style="width: 25%;">
+                                <span class="gantt-text">지옥물결 파밍 (기초 자원 위상 파밍 및 재화 수급)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">참 & 세트 파밍</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar bar-early">
+                                <span class="gantt-text">혼돈계 틈새 & 찌푸린 눈 5세트 (Paragon 1-100)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">장화 핵심 파밍</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar bar-early" style="left: 20%; width: 30%;">
+                                <span class="gantt-text">빙결 야수 처치 (야수내림 장화 파밍 및 빌드 전환)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 5 -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">기력/CDR 세팅</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar bar-mid">
+                                <span class="gantt-text">기력 225 / CDR 63% 세팅 (고뇌 2-3 안착)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 6 -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">신화 제작 & 보스스왑</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar bar-late">
+                                <span class="gantt-text">샤코 크래프팅 및 보스전 고속의 위상 무기 완성 (Paragon 200-300)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 7 -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">극엔드게임 푸시</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar bar-push">
+                                <span class="gantt-text">펠게인의 인장 반지 장착 및 나락 고단 푸시</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive" style="margin-top:2.5rem;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>단계</th>
+                            <th>세부 파밍 지침 및 목표</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1단계: 기반 마련 (Starter)</strong></td>
+                            <td>화살비 빌드는 초기에 구동할 수 없으므로, 심추 도적 등의 레벨링 빌드로 **1-60 레벨**을 빠르게 달성하고 난이도 <span class="h-general">고뇌 1</span>에 진입해 기초 위상 전서를 수집합니다.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2단계: 코어 획득 및 전환 (Early)</strong></td>
+                            <td>**빙결 야수**를 집중 처치하여 빌드 코어인 <span class="h-unique">야수내림 장화</span>를 획득하고, **혼돈계 틈새**를 수시 순환하며 <span class="h-charm">찌푸린 눈</span> 장신구 5세트를 맞춥니다. 자원과 쿨타임 최저 요구선이 갖춰지는 즉시 빌드를 화살비로 스왑합니다.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3단계: 브레이크포인트 확립 (Mid)</strong></td>
+                            <td>아이템 마스터워킹 및 템퍼링을 통해 **재대감 63%(화살비 쿨다운 15초)** 및 **최대 기력 225**를 돌파하여 진정한 무한 사이클을 확보합니다. 보스 처치 속도를 위해 **<span class="h-aspect">고속의 위상</span>** 무기 스왑을 준비합니다.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4단계: 나락 파괴 (Late/Push)</strong></td>
+                            <td>호라드림의 함에서 <span class="h-mythic">할리퀸 관모</span>를 제작하여 모든 스킬 랭크를 대폭 램프업하고, <span class="h-unique">펠게인의 인장 반지</span>를 세팅하여 최대 기력 300 달성과 화살비 더블 피해 노드를 가동, 나락 초고단을 돌파합니다.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Maxroll.gg Build Guide Analysis - Antigravity Pairing Project</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Temporary build outputs
+extracted_build_content.txt
+prompt_for_ai.txt
+extracted_text.txt
+
+# Log files
+*.log
+.agents/logs/
+.agents/tasks/
