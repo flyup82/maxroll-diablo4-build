@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{TITLE}}</title>
+    <title>방패 돌진 성기사 엔드게임 가이드</title>
     <!-- Modern Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -527,25 +527,136 @@
 <body>
 
     <header>
-        <span class="season-badge">{{SEASON}}</span>
-        <h1>{{TITLE}}</h1>
-        <p class="author">{{AUTHOR}}</p>
+        <span class="season-badge">시즌 14 - 죽음의 각성</span>
+        <h1>방패 돌진 성기사 엔드게임 가이드</h1>
+        <p class="author">Chronikz</p>
     </header>
 
     <main>
         <!-- 1. 빌드 메커니즘 개요 -->
         <section id="overview">
-            {{OVERVIEW_HTML}}
+            
+<h2>빌드 개요 (Overview)</h2>
+<p>이 빌드는 <span class="h-skill">방패 돌진</span>(Shield Charge)을 사용하여 적에게 직접 적중 시 <strong>물리 가시(Physical Thorns)</strong> 피해를 주고, 방어(Block)할 때마다 <span class="h-skill">응보</span>(Retribution)가 맥동하여 주변 적들을 분쇄하는 독특한 메커니즘을 가집니다. 검 대신 거대한 방패로 악마의 무리를 타격하는 것을 즐긴다면 최적의 선택입니다! 결의(Resolve)를 중첩하여 받는 피해를 줄이고, <span class="h-unique">회색의 어깨걸이</span>(Mantle of the Grey)와 <span class="h-glyph">파수꾼</span>(Sentinel) 문양을 통해 딜링을 극대화합니다.</p>
+
+<div class="alert-box">
+    <div class="alert-box-title">장점과 단점</div>
+    <p><strong>장점:</strong> 엄청난 기동성(Zoomy zoomy), 방패로 짓뭉개는 강렬한 타격감.<br>
+    <strong>단점:</strong> 사거리가 짧으며, 적의 공격을 방어하기 위한 정교한 포지셔닝이 요구됨.</p>
+</div>
+
+<div class="alert-box" style="border-left-color: var(--color-mythic);">
+    <div class="alert-box-title">방어 판정 및 용병</div>
+    <p>결의(Resolve) 스택을 최대치(30)까지 쌓는 최대 방어 전략의 핵심입니다. 핵심 메커니즘 중 <strong><span class="h-general">공격이 방어된 것으로 간주됨 (방어 발동)</span></strong>은 방어 확률에 의존하지 않고 강력한 응보 펄스를 즉시 유발합니다. <span class="h-general">라헤어</span>(철벽/고무)를 주 용병으로 채용하여 방어를 극대화하고, <span class="h-general">알드킨</span>을 증원으로 활용합니다.</p>
+</div>
+
         </section>
 
         <!-- 2. 사냥법 및 기술 활용 -->
         <section id="gameplay">
-            {{GAMEPLAY_HTML}}
+            
+<h2>사냥법 및 기술 활용 (Gameplay)</h2>
+<p>방패 돌진 성기사의 주력 딜링 메커니즘과 스킬 연계 순서입니다.</p>
+<ul class="step-list">
+    <li class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-content">
+            <strong>진입 및 메인 딜링</strong>
+            적 무리에 <span class="h-skill">방패 돌진</span>으로 뛰어들어 <span class="h-general">공격이 방어된 것으로 간주됨 (방어 발동)</span>을 유발하여 광역 <span class="h-skill">응보</span>(Retribution) 펄스 피해를 발생시킵니다.
+        </div>
+    </li>
+    <li class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-content">
+            <strong>버프 유지 및 몹 몰이</strong>
+            <span class="h-skill">격돌</span>(Clash)을 6초마다 사용하여 가시 피해 증가 및 방어 확률 버프를 유지합니다. <span class="h-skill">규탄</span>(Condemn)으로 적을 한 곳으로 모으고 <span class="h-general">취약</span>과 약화를 부여합니다.
+        </div>
+    </li>
+    <li class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-content">
+            <strong>생존 및 극딜 폭발</strong>
+            위험한 순간이나 정예몹 상대로 <span class="h-skill">요새</span>(Fortress)를 사용하여 3초간 면역 상태가 되고 폭딜을 뿜어냅니다. <span class="h-skill">광신 오라</span> 및 <span class="h-skill">저항 오라</span>를 통해 저지 불가 상태를 확보합니다.
+        </div>
+    </li>
+</ul>
+
+<div class="flowchart-wrapper">
+    <div class="flowchart-nodes">
+        <div class="flowchart-node">
+            <h4>방패 돌진 (Shield Charge)</h4>
+            <p>직접 타격 및 방어(Block) 유발</p>
+        </div>
+        <div class="flowchart-connector">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="flowchart-node">
+            <h4>물리 가시 & 응보</h4>
+            <p>공격이 방어된 것으로 간주 (확정 펄스)</p>
+        </div>
+    </div>
+    <div class="flowchart-target">
+        최종 출력: 요새(Fortress) 발동을 통한 결의 폭발 및 적 분쇄!
+    </div>
+</div>
+
         </section>
 
         <!-- 3. 단계별 장비 요구 조건 -->
         <section id="requirements">
-            {{REQUIREMENTS_HTML}}
+            
+<h2>단계별 장비 요구 조건 (Requirements)</h2>
+<p>빌드를 완벽하게 작동시키기 위한 최소 조건부터 엔드게임 세팅까지의 요구 사항입니다.</p>
+<div class="table-responsive">
+    <table>
+        <thead>
+            <tr>
+                <th>분류</th>
+                <th>Starter (최소 조건)</th>
+                <th>Midgame (최적 조건)</th>
+                <th>Endgame (완벽 조건)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>핵심 고유 장비</strong></td>
+                <td><span class="h-unique">자카룸의 전령</span></td>
+                <td><span class="h-unique">티볼트의 의지</span>, <span class="h-unique">회색의 어깨걸이</span></td>
+                <td><span class="h-unique">피의 광기 우상</span> (Push 변형)</td>
+            </tr>
+            <tr>
+                <td><strong>필수 위상</strong></td>
+                <td><span class="h-aspect">차단의 위상</span></td>
+                <td><span class="h-aspect">방책 위상</span></td>
+                <td><span class="h-aspect">글린의 모루의 위상</span></td>
+            </tr>
+            <tr>
+                <td><strong>주요 스탯 / 방어</strong></td>
+                <td>방어도 (9,230 캡), 생명력</td>
+                <td>방패 방어 확률 100% 근접</td>
+                <td>결의 최대치 30 (담금질/명품화 +6)</td>
+            </tr>
+            <tr>
+                <td><strong>룬(Runes) 및 문양</strong></td>
+                <td><span class="h-rune">모트</span> (Mot) 룬</td>
+                <td><span class="h-glyph">파수꾼</span>, <span class="h-glyph">기백</span> 문양</td>
+                <td><span class="h-rune">라크</span> (Lac) 룬 세팅</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="alert-box" style="border-left-color: #DCA779; margin-top: 20px;">
+    <div class="alert-box-title">획득처 및 파밍 팁 (Acquisition & Tips)</div>
+    <ul style="margin: 0; padding-left: 20px;">
+        <li><strong><span class="h-unique">회색의 어깨걸이</span></strong>: 시즌 14 추가 보스인 <strong>증오의 사도 (Herald of Hatred)</strong> 처치로 우선 파밍을 권장합니다.</li>
+        <li><strong><span class="h-unique">자카룸의 전령</span></strong>: <strong>아스타로트 (Astaroth)</strong>에서 고정 획득 가능합니다.</li>
+        <li><strong><span class="h-unique">피의 광기 우상</span> / <span class="h-unique">티볼트의 의지</span></strong>: 두리엘 및 안다리엘, 메아리치는 바르샨 및 그리고아르 등 타겟 보스에서 획득 가능합니다.</li>
+        <li><strong>룬 (모트, 쿠에, 라크)</strong>: 쿠라스트 지하도시(Kurast Undercity) 및 암흑 성채(Dark Citadel)를 집중적으로 플레이하여 수집합니다.</li>
+        <li><strong>문양 (파수꾼 등)</strong>: 시즌 6+ 기준, 명공의 나락(The Pit) 클리어를 통해 드랍 및 레벨업을 진행합니다.</li>
+    </ul>
+</div>
+
         </section>
 
         <!-- 4. 최적 파밍 루트 및 전략 -->
@@ -557,19 +668,52 @@
                 <!-- Maxroll standard progression segments -->
                 <div class="gantt-header">
                     <div class="gantt-header-label">파밍 대상 콘텐츠</div>
-                    <div>Starter (Lv 1-60)</div>
+                    <div>Starter (Lv 1-70)</div>
                     <div>Early (Paragon 1-100)</div>
                     <div>Mid (Paragon 100-200)</div>
                     <div>Late / Push (Paragon 200-300)</div>
                 </div>
                 
                 <div class="gantt-grid">
-                    {{GANTT_ROWS_HTML}}
+                    
+<div class="gantt-row">
+    <div class="gantt-label">기초 가시 세팅 (Thorns)</div>
+    <div class="gantt-track">
+        <div class="gantt-bar bar-starter" style="width: 25%; left: 0%;" title="Starter (Lv 1-70)">
+            <span class="gantt-text">위상 파밍</span>
+        </div>
+    </div>
+</div>
+<div class="gantt-row">
+    <div class="gantt-label">고유 아이템 확보</div>
+    <div class="gantt-track">
+        <div class="gantt-bar bar-early" style="width: 35%; left: 25%;" title="Early (Paragon 1-100)">
+            <span class="gantt-text">보스 타겟 파밍</span>
+        </div>
+    </div>
+</div>
+<div class="gantt-row">
+    <div class="gantt-label">결의(Resolve) 중첩 템퍼링</div>
+    <div class="gantt-track">
+        <div class="gantt-bar bar-mid" style="width: 40%; left: 40%;" title="Mid (Paragon 100-200)">
+            <span class="gantt-text">명품화 30 스택</span>
+        </div>
+    </div>
+</div>
+<div class="gantt-row">
+    <div class="gantt-label">나락 고단 푸시 (Push)</div>
+    <div class="gantt-track">
+        <div class="gantt-bar bar-late" style="width: 25%; left: 75%;" title="Late (Paragon 200-300)">
+            <span class="gantt-text">신화템 & 한계 돌파</span>
+        </div>
+    </div>
+</div>
+
                 </div>
             </div>
             
             <div class="table-responsive" style="margin-top:2.5rem;">
-                {{FARMING_SUMMARY_TABLE_HTML}}
+                
             </div>
         </section>
     </main>

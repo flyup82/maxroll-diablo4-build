@@ -9,6 +9,8 @@
 ### 1.1. 정책 참조 체인 (Policy Reference Chain)
 에이전트는 작업 수행 시 아래 정의된 프로젝트 내부/외부 표준 명세서를 최우선 참조합니다.
 *   **코딩 표준 및 번역 사전**: [.agents/rules/instructions.md](file://./.agents/rules/instructions.md)
+*   **Maxroll 범용 빌드 가이드 생성 글로벌 프로세스**: [.agents/global_maxroll_guide_generation_prompt.md](file://./.agents/global_maxroll_guide_generation_prompt.md)
+*   **디아블로 4 핵심 메커니즘 및 파밍 지식 베이스**: [.agents/rules/d4_knowledge_base.md](file://./.agents/rules/d4_knowledge_base.md)
 
 ### 1.2. 추론 노력 배분 정책 (Reasoning Effort Guidelines)
 에이전트는 작업 성격에 맞추어 모델의 추론 노력을 적절히 배분하여 리소스를 최적화합니다.
@@ -37,6 +39,8 @@
 *   [x] **4단계: 최적화**: 룰셋 명명 규칙 및 위상 분리 리팩토링 및 2차 PR 제출 완료.
 *   [x] **5단계: 표준화**: Mermaid 구문 에러 해결, 얇은 간트 차트 UI 개선, 시즌 6+ 스케일 패치, 공용 UI 마스터 템플릿화 완료.
 *   [x] **6단계: 확장**: 화살비 도적 시즌 14 가이드 분석 및 한글화 렌더링 완료.
+*   [x] **7단계: 정책 고도화**: 특정 빌드에 국한되지 않는 Maxroll 범용 빌드 가이드 생성 글로벌 프로세스(Global Policy) 수립 및 탑재 완료.
+*   [x] **8단계: 자동화 실증**: 방패 돌진 성기사(Shield Charge Paladin) 가이드를 타겟으로 신규 글로벌 프로세스 기반 자동 분석 및 산출물(Markdown, HTML) 렌더링 성공.
 
 ### 2.2. 작업 타임라인 및 마일스톤 (Milestones)
 *   **2026-07-11**: 프로젝트 신규 세팅 완료.
@@ -53,6 +57,14 @@
 *   **2026-07-11**: 한글 번역기 데이터셋(`aspects.json`, `uniques.json`, `skills.json`, `glyphs.json`, `horadric-component.json`, `board.json` 등)을 워크스페이스 로컬 `.agents/rules/d4_translator_data/` 에 통째로 영구 이식 완료.
 *   **2026-07-11**: 화살비 도적 시즌 14 빌드 원본 분석 및 한글 정식 용어집 정밀 매핑 완료.
 *   **2026-07-11**: 화살비 도적 전용 마크다운 가이드(`rogue_rain_of_arrows_guide.md`) 및 프리미엄 다크테마 HTML 가이드(`rogue_rain_of_arrows_guide.html`) 생성 완료.
+*   **2026-07-20**: Playwright 소켓 에러 관련 예측/테스트 결과 및 Antigravity 차단 버그 피드백 문서 생성 및 프로젝트 루트 배치 완료.
+*   **2026-08-03**: 특정 직업에 제한되지 않는 Maxroll 범용 빌드 가이드 생성 프롬프트(`.agents/global_maxroll_guide_generation_prompt.md`) 수립 및 프로젝트 정책 참조 체인(Policy Reference Chain)에 자동 연동. (이후 모든 Maxroll 빌드 URL 요청 시 본 프로세스 강제 적용)
+*   **2026-08-03**: 글로벌 프로세스 적용 실증 테스트 - 방패 돌진 성기사 빌드 마크다운(`260803_140000_shield_charge_paladin_guide.md`) 및 마스터 템플릿 기반 HTML 가이드(`260803_140000_shield_charge_paladin_guide.html`) 생성 완료 (시즌 14 1-70 스케일 강제 적용).
+*   **2026-08-03**: `analyze_build.py` 로직 개편 및 지식 베이스(d4_knowledge_base)를 반영하여 방패 돌진 성기사 가이드 V2 재출력 완료 (`260803_145800_shield_charge_paladin_guide.[md|html]`).
+*   **2026-08-03**: `analyze_build.py`의 과도한 참(Charm) 분류 휴리스틱 버그(ex: `of the`)를 수정하여 고유 장비("회색의 어깨걸이" 등)가 녹색 부적으로 오분류되는 문제 해결 및 V3 재출력 완료 (`260803_150700_shield_charge_paladin_guide.[md|html]`).
+*   **2026-08-03**: 외부 블로그 교차 검증을 통해 시즌 14 신규 보스(증오의 사도, 아스타로트 등) 타겟 드랍 테이블 갱신 (지식 베이스 업데이트). 이를 반영하여 방패 돌진 성기사 V4 재출력 완료 (`260803_151600_shield_charge_paladin_guide.[md|html]`).
+*   **2026-08-03**: 응보의 방패 성기사 레벨링 가이드 마크다운(`260803_151700_shield_of_retribution_paladin_leveling_guide.md`) 및 마스터 템플릿 기반 HTML 가이드(`260803_151700_shield_of_retribution_paladin_leveling_guide.html`) 생성 완료.
+
 
 ### 2.3. 핵심 설계 결정 사항 (Architectural Decisions)
 *   **규칙의 계층화 격리**:

@@ -79,7 +79,8 @@ def load_localization_db():
         "board": board
     }
 
-def build_glossary_prompt(db):
+def build_glossary_prompt(db, text):
+    text_lower = text.lower()
     # Classify components (Runes vs Charms) and uniques (Mythic vs Unique)
     aspect_rules = []
     rune_rules = []
@@ -90,45 +91,52 @@ def build_glossary_prompt(db):
     glyph_rules = []
     paragon_rules = []
 
+    def is_in_text(en):
+        return en.lower() in text_lower
+
     # Aspects Mapping
-    for en, ko in list(db["aspects"].items())[:80]: # Sample list to keep prompt token efficient
-        aspect_rules.append(f"   - {en} -> {ko}")
+    for en, ko in db["aspects"].items():
+        if is_in_text(en):
+            aspect_rules.append(f"   - {en} -> {ko}")
 
     # Skills Mapping
-    for en, ko in list(db["skills"].items())[:60]:
-        skill_rules.append(f"   - {en} -> {ko}")
+    for en, ko in db["skills"].items():
+        if is_in_text(en):
+            skill_rules.append(f"   - {en} -> {ko}")
 
     # Glyphs Mapping
-    for en, ko in list(db["glyphs"].items())[:30]:
-        glyph_rules.append(f"   - {en} -> {ko}")
+    for en, ko in db["glyphs"].items():
+        if is_in_text(en):
+            glyph_rules.append(f"   - {en} -> {ko}")
 
     # Paragon Board Mapping
-    for en, ko in list(db["board"].items())[:30]:
-        paragon_rules.append(f"   - {en} -> {ko}")
+    for en, ko in db["board"].items():
+        if is_in_text(en):
+            paragon_rules.append(f"   - {en} -> {ko}")
 
     # Uniques & Mythics classification
     mythic_keywords = ["harlequin", "shroud of false", "starless", "tyrael", "perdition", "melted", "doombringer", "grandfather"]
     for en, ko in db["uniques"].items():
-        is_mythic = any(kw in en.lower() for kw in mythic_keywords)
-        if is_mythic:
-            mythic_rules.append(f"   - {en} -> {ko}")
-        else:
-            # Check if it looks like a Charm (e.g. contains "Narrow Eye" or "Triumph" etc.)
-            is_charm = any(kw in en.lower() for kw in ["narrow eye", "triumph", "charm", "of the"])
-            if is_charm:
-                charm_rules.append(f"   - {en} -> {ko}")
+        if is_in_text(en):
+            is_mythic = any(kw in en.lower() for kw in mythic_keywords)
+            if is_mythic:
+                mythic_rules.append(f"   - {en} -> {ko}")
             else:
-                unique_rules.append(f"   - {en} -> {ko}")
+                is_charm = "charm" in en.lower()
+                if is_charm:
+                    charm_rules.append(f"   - {en} -> {ko}")
+                else:
+                    unique_rules.append(f"   - {en} -> {ko}")
 
     # Horadric Components (Runes) classification
     for en, ko in db["components"].items():
-        # Check if it is a rune (typically very short names 3 letters like Ceh, Cir, Gar, Ohm, Jah, etc.)
-        if len(en) <= 4 or "rune" in en.lower():
-            rune_rules.append(f"   - {en} -> {ko}")
-        else:
-            is_charm = any(kw in en.lower() for kw in ["narrow eye", "triumph", "charm", "of the"])
-            if is_charm:
-                charm_rules.append(f"   - {en} -> {ko}")
+        if is_in_text(en):
+            if len(en) <= 4 or "rune" in en.lower():
+                rune_rules.append(f"   - {en} -> {ko}")
+            else:
+                is_charm = "charm" in en.lower()
+                if is_charm:
+                    charm_rules.append(f"   - {en} -> {ko}")
 
     # Build the structured markdown guide
     glossary = f"""[디아블로 IV 공식 한글 용어 번역 및 HTML 강조 가이드라인 (동적 연동 DB)]
@@ -136,30 +144,31 @@ def build_glossary_prompt(db):
 AI는 번역 및 가이드 문서 작성 시 다음 용어들을 반드시 한국어 공식 명칭으로 번역하고, HTML 출력물에서는 각 용어 속성에 알맞은 <span> 클래스로 감싸주어야 합니다. (사각형 박스 스타일링 없이 글자 색상만 씌우도록 CSS를 정의하십시오).
 
 1. 전설 위상(Aspect) ➜ 클래스: h-aspect (주황색)
-{chr(10).join(aspect_rules[:40])}
+{chr(10).join(aspect_rules)}
 
 2. 일반 고유(Unique) 아이템 ➜ 클래스: h-unique (골드색)
-{chr(10).join(unique_rules[:30])}
+{chr(10).join(unique_rules)}
 
 3. 신화 고유(Mythic Unique) 아이템 ➜ 클래스: h-mythic (연보라색)
 {chr(10).join(mythic_rules)}
 
 4. 룬(Rune) 명칭 ➜ 클래스: h-rune (금색)
-{chr(10).join(rune_rules[:40])}
+{chr(10).join(rune_rules)}
 
 5. 참/부적(Charm) 명칭 ➜ 클래스: h-charm (녹색)
-{chr(10).join(charm_rules[:30])}
+{chr(10).join(charm_rules)}
 
 6. 기술(스킬) 명칭 ➜ 클래스: h-skill (하늘색)
-{chr(10).join(skill_rules[:45])}
+{chr(10).join(skill_rules)}
 
 7. 문양(Glyph) 명칭 ➜ 클래스: h-glyph (오렌지색 + 문양 아이콘 SVG 결합)
-{chr(10).join(glyph_rules[:25])}
+{chr(10).join(glyph_rules)}
 
 8. 정복자 판(Paragon) 명칭 ➜ 클래스: h-paragon (금색 + 정복자 격자 아이콘 SVG 결합)
-{chr(10).join(paragon_rules[:25])}
+{chr(10).join(paragon_rules)}
 
 9. 중요 용어 및 상태이상 ➜ 클래스: h-general (하늘색)
+   - Hit Count As Blocking -> 공격이 방어된 것으로 간주됨 (방어 발동)
    - Rogue -> 도적
    - Season 14: Death Awakening -> 시즌 14: 죽음의 각성
    - Vulnerable -> 취약
@@ -237,7 +246,7 @@ def main():
     # Load localization database
     print("공식 번역기 데이터셋(JSON) 로드 및 가이드라인 텍스트 작성 중...")
     db = load_localization_db()
-    glossary = build_glossary_prompt(db)
+    glossary = build_glossary_prompt(db, clean_text)
 
     # Save prompt template
     prompt_content = PROMPT_TEMPLATE.format(
