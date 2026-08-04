@@ -9,8 +9,9 @@ Maxroll.gg의 디아블로 IV endgame 빌드 가이드를 크롤링하여 태그
 ## ✨ 핵심 특장점 (Key Features)
 
 *   ⚡ **클린 텍스트 파싱**: maxroll.gg URL에서 광고, 불필요한 스크립트 및 HTML 보일러플레이트를 걸러내어 AI가 분석하기 좋은 핵심 지문 추출.
-*   📜 **공식 용어 완벽 매핑**: 게임 내 한국어 공식 명칭과 위상/스킬 명칭을 100% 매칭하는 에이전트 번역 가이드 탑재.
-*   🎨 **시각적 로드맵 차트**: HTML 보고서 하단에 반응형 CSS 및 SVG 기반의 레벨링/아이템 파밍 가이드라인 타임라인 시각화 적용.
+*   📜 **동적(Dynamic) 용어 매핑**: 게임 내 한국어 공식 명칭(위상/스킬/고유 아이템 등)을 크롤링한 영문 텍스트 내 존재 여부를 확인하여 100% 매칭 및 할루시네이션 방지.
+*   🧠 **D4 지식 베이스 연동**: 시즌별 최신 보스 드랍 테이블(증오의 사도, 아스타로트 등)과 게임 메커니즘을 정의한 `.agents/rules/d4_knowledge_base.md`를 기반으로 파밍 가이드라인 자동 생성.
+*   🎨 **글로벌 템플릿화 및 시각적 차트**: 특정 빌드에 국한되지 않는 범용 프롬프트(`.agents/global_maxroll_guide_generation_prompt.md`)와 공통 HTML 템플릿을 통해 일관된 반응형 간트 차트 및 다이어그램 시각화.
 
 ---
 
@@ -42,9 +43,9 @@ agy-init
 python3 analyze_build.py [maxroll_build_url]
 ```
 
-### 3단계: AI 번역 및 리포트 저장
-*   생성된 `prompt_for_ai.txt` 파일을 복사하여 Gemini에 전달합니다.
-*   출력된 Markdown 소스를 `heartseeker_rogue_guide.md`로, HTML 소스를 `heartseeker_rogue_guide.html`로 저장합니다.
+### 3단계: AI 번역 및 리포트 자동 생성
+*   `analyze_build.py`를 실행하면 `prompt_for_ai.txt`가 자동 생성됩니다.
+*   글로벌 정책 프롬프트 및 지식 베이스를 바탕으로 AI 에이전트가 `[클래스명]_[빌드명]_guide.md` 및 `.html` 가이드를 템플릿 기반으로 렌더링하여 프로젝트 폴더 내에 저장합니다.
 
 ---
 

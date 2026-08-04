@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{TITLE}}</title>
+    <title>응보의 방패 성기사 레벨링 가이드</title>
     <!-- Modern Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -527,25 +527,125 @@
 <body>
 
     <header>
-        <span class="season-badge">{{SEASON}}</span>
-        <h1>{{TITLE}}</h1>
-        <p class="author">{{AUTHOR}}</p>
+        <span class="season-badge">시즌 14 - 죽음의 각성</span>
+        <h1>응보의 방패 성기사 레벨링 가이드</h1>
+        <p class="author">Hysteria</p>
     </header>
 
     <main>
         <!-- 1. 빌드 메커니즘 개요 -->
         <section id="overview">
-            {{OVERVIEW_HTML}}
+            
+<h2>빌드 개요 (Overview)</h2>
+<p>이 빌드는 물리 가시(Thorns) 피해와 거한(Juggernaut) 시너지를 기반으로 하는 레벨링 세팅입니다. 주 공격기인 <span class="h-skill">축복받은 방패</span>(Blessed Shield)에 <span class="h-skill">응보</span> 업그레이드를 적용하여 펄스를 발산하는 파괴의 원반을 적 무리에 던져, 보스전에서도 뛰어난 밸런스를 보여줍니다. 무기 공격력 자체는 크게 중요하지 않으므로 장비 파밍 스트레스 없이 쾌속 레벨링이 가능합니다!</p>
+<p><span class="h-skill">집결</span>(Rally) - 희생의 권언을 통해 생명력을 자원으로 활용하며, <span class="h-skill">격돌</span>(Clash) 등을 통해 딜을 증폭시킵니다.</p>
+
+<div class="alert-box">
+    <div class="alert-box-title">장점과 단점</div>
+    <p><strong>장점:</strong> 초고속 레벨링(Super Fast), 무기 데미지 및 장비 의존도 낮음, 엔드게임 전환 용이.<br>
+    <strong>단점:</strong> 좁은 광역 범위(Small AoE), 스킬 쿨타임 관리 필요, 고정된 대상(보스 등)에게 최적화됨.</p>
+</div>
+
         </section>
 
         <!-- 2. 사냥법 및 기술 활용 -->
         <section id="gameplay">
-            {{GAMEPLAY_HTML}}
+            
+<h2>사냥법 및 기술 활용 (Gameplay)</h2>
+<p>응보의 방패 성기사의 딜링 메커니즘과 스킬 연계 순서입니다.</p>
+<ul class="step-list">
+    <li class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-content">
+            <strong>가시 및 시너지 버프 활성화</strong>
+            <span class="h-skill">격돌</span>(Clash)과 방어 기제를 사용하여 가시 피해량을 펌핑하고 거한(Juggernaut) 스택을 쌓습니다.
+        </div>
+    </li>
+    <li class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-content">
+            <strong>자원 및 체력 관리</strong>
+            <span class="h-skill">집결</span>(Rally)을 사용하여 생명력을 자원으로 전환하고, 직업 고유 치유 스킬들을 활용하여 체력과 신앙(Faith)을 유지합니다. 이동 속도 버프도 함께 챙깁니다.
+        </div>
+    </li>
+    <li class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-content">
+            <strong>메인 딜링 (원반 투척)</strong>
+            <span class="h-skill">축복받은 방패</span>(Blessed Shield)를 투척하여 적 무리 사이를 튕기게 만들고, 주변 적을 녹입니다. 
+        </div>
+    </li>
+</ul>
+
+<div class="flowchart-wrapper">
+    <div class="flowchart-nodes">
+        <div class="flowchart-node">
+            <h4>자원/버프 관리</h4>
+            <p>집결(생명력 전환) + 격돌(가시 펌핑)</p>
+        </div>
+        <div class="flowchart-connector">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="flowchart-node">
+            <h4>축복받은 방패</h4>
+            <p>응보(Retribution) 원반 투척</p>
+        </div>
+    </div>
+    <div class="flowchart-target">
+        최종 출력: 적 무리 및 보스에게 강력한 펄스 데미지 연쇄 폭발
+    </div>
+</div>
+
         </section>
 
         <!-- 3. 단계별 장비 요구 조건 -->
         <section id="requirements">
-            {{REQUIREMENTS_HTML}}
+            
+<h2>단계별 장비 요구 조건 (Requirements)</h2>
+<p>1-70 레벨업 과정을 위한 추천 세팅입니다.</p>
+<div class="table-responsive">
+    <table>
+        <thead>
+            <tr>
+                <th>분류</th>
+                <th>Starter (1-50렙 구간)</th>
+                <th>Early Endgame (50-70렙)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>핵심 고유 장비</strong></td>
+                <td>(없음 - 아무 레어/전설 장비 착용)</td>
+                <td><span class="h-unique">자카룸의 전령</span> 또는 고유 <span class="h-unique">방패</span> 획득 시 착용</td>
+            </tr>
+            <tr>
+                <td><strong>필수 위상</strong></td>
+                <td><span class="h-aspect">어스름</span>(Umbral), <span class="h-aspect">바늘불꽃</span>(Needleflare)</td>
+                <td><span class="h-aspect">응보</span>(Retribution), <span class="h-aspect">거한</span>(Juggernaut)</td>
+            </tr>
+            <tr>
+                <td><strong>주요 스탯</strong></td>
+                <td>생명력, 가시(Thorns) 피해</td>
+                <td>방어도 9,230 캡 달성, 원소 저항 70% 캡 달성</td>
+            </tr>
+            <tr>
+                <td><strong>룬(Runes)</strong></td>
+                <td><span class="h-rune">포크</span> (Poc), <span class="h-rune">라크</span> (Lac) 등 범용 룬</td>
+                <td>(엔드게임 진입 전까지 자유 배치)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="alert-box" style="border-left-color: #DCA779; margin-top: 20px;">
+    <div class="alert-box-title">획득처 및 파밍 팁 (Acquisition & Tips)</div>
+    <ul style="margin: 0; padding-left: 20px;">
+        <li><strong>레벨링 무기</strong>: 이 빌드는 무기의 초당 공격력(DPS)에 전혀 영향을 받지 않습니다. 무기에 붙는 보조 스탯(가시, 생명력 등)만 보고 착용하세요.</li>
+        <li><strong><span class="h-unique">자카룸의 전령</span></strong>: 50레벨 이후 고행 난이도 진입 시 <strong>아스타로트 (Astaroth)</strong>에서 고정 파밍하여 엔드게임 빌드로 부드럽게 전환 가능합니다.</li>
+        <li><strong>필수 위상</strong>: 던전 클리어를 통해 힘의 전서(Codex of Power)에 등록해 두면 레벨업 과정에서 장비가 바뀔 때마다 바로 각인할 수 있습니다.</li>
+    </ul>
+</div>
+
         </section>
 
         <!-- 4. 최적 파밍 루트 및 전략 -->
@@ -557,19 +657,36 @@
                 <!-- Maxroll standard progression segments -->
                 <div class="gantt-header">
                     <div class="gantt-header-label">파밍 대상 콘텐츠</div>
-                    <div>Starter (Lv 1-60)</div>
-                    <div>Early (Paragon 1-100)</div>
-                    <div>Mid (Paragon 100-200)</div>
+                    <div>Starter (Lv 1-50)</div>
+                    <div>Early (Lv 50-70)</div>
+                    <div>Mid (N/A)</div>
                     <div>Late / Push (Paragon 200-300)</div>
                 </div>
                 
                 <div class="gantt-grid">
-                    {{GANTT_ROWS_HTML}}
+                    
+<div class="gantt-row">
+    <div class="gantt-label">캠페인 및 기초 레벨업</div>
+    <div class="gantt-track">
+        <div class="gantt-bar bar-starter" style="width: 50%; left: 0%;" title="Starter (Lv 1-50)">
+            <span class="gantt-text">힘의 전서 위상 확보</span>
+        </div>
+    </div>
+</div>
+<div class="gantt-row">
+    <div class="gantt-label">고행 난이도 진입 준비</div>
+    <div class="gantt-track">
+        <div class="gantt-bar bar-early" style="width: 50%; left: 50%;" title="Early (Lv 50-70)">
+            <span class="gantt-text">신성/선조 아이템 파밍</span>
+        </div>
+    </div>
+</div>
+
                 </div>
             </div>
             
             <div class="table-responsive" style="margin-top:2.5rem;">
-                {{FARMING_SUMMARY_TABLE_HTML}}
+                
             </div>
         </section>
     </main>
